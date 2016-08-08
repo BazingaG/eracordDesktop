@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -33,6 +34,8 @@ public class eraConncetion {
             connection.setRequestProperty("Content-Type", 
                  "application/json");
             connection.setRequestProperty("custom-Header", "XYZ");
+            
+           
 
             //connection.setRequestProperty("Content-Length", "" + 
             //         Integer.toString(urlParameters.getBytes().length));
@@ -71,11 +74,13 @@ public class eraConncetion {
             String token = jsonobject.getString("token");
             a1 = new AdminDesk();
            // a1.setValue(email, token);
+           
             a1.setVisible(true);
             rd.close();
 
           } catch (Exception e) {
             System.out.println("Error!");
+            
             e.printStackTrace();
             //return null;
             
