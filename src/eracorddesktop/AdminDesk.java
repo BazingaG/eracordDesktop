@@ -285,15 +285,7 @@ public class AdminDesk extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here: for fetch data
         System.out.println("asdasdasd");
-        try {
-            // System.out.println("{\"user\": "+new HashToString().getString(user)+"}");
-            JsonObject jsonObj = new httpConnection().doGet("/students/sync_organisation_students.json", auth_token);
-            //if(jsonObj.getBoolean("success")){
-            System.err.println(jsonObj);
-            //}
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        new FetchStudents().fetch(auth_token);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

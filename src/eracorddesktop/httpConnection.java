@@ -83,15 +83,7 @@ public class httpConnection {
             connection.setRequestMethod("GET");
             //connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Authorization", token);
-            //connection.setRequestProperty("Content-Language", "en-US");
-            //connection.setUseCaches(false);
-            //connection.setDoInput(true);
-            //connection.setDoOutput(true);
-         
-            //Send request
-            //DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-            //wr.flush();
-            //wr.close();
+            
             //Get Response    
             InputStream is = connection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
