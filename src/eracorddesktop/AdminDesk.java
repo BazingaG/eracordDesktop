@@ -15,7 +15,6 @@ import java.util.Hashtable;
 import javax.json.*;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -24,21 +23,19 @@ import javax.swing.JOptionPane;
  * @author lenovo
  */
 public class AdminDesk extends javax.swing.JFrame {
-   
     /**
      * Creates new form AdminDesk
      */
+    String auth_token;
     public AdminDesk() {
         initComponents();
-        
         jButton4.setVisible(false);
         jButton5.setVisible(false);
         jButton6.setVisible(false);
-        int dialogHeight = (this.getHeight()/2) - 120;
-        int dialogWidth = (this.getWidth()/2) + 80;
+        int dialogHeight = (this.getHeight() / 2) - 120;
+        int dialogWidth = (this.getWidth() / 2) + 80;
+        jDialog1.setBounds(dialogWidth, dialogHeight, 200, 200);
         
-        jDialog1.setBounds(dialogWidth, dialogHeight,200, 200);
-       
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -253,44 +250,32 @@ public class AdminDesk extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         
-         if(jTextField1.getText().equals("") || jPasswordField1.getPassword().equals("")) {
+        if (jTextField1.getText().equals("") || jPasswordField1.getPassword().equals("")) {
             jLabel5.setText("Please Enter Email and Password");
             return;
         }
-        if(jTextField1.getText().length() > 35)
-        {
+        if (jTextField1.getText().length() > 35) {
             jLabel5.setText("Email is so long");
             return;
         }
-        if(jTextField1.getText().matches("re+^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"))
-        {
-             jLabel5.setText("Please");
+        if (jTextField1.getText().matches("re+^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@")) {
+            jLabel5.setText("Please");
             return;
         }
-      
-        
-        
         Hashtable user = new Hashtable();
         user.put("email", jTextField1.getText());
         user.put("password", jPasswordField1.getText());
-        
-            
         try {
-           // System.out.println("{\"user\": "+new HashToString().getString(user)+"}");
-          
-            JsonObject jsonObj = new httpConnection().doPost("/users/sign_in", "{\"user\": "+new HashToString().getString(user)+"}" , "");
-            if(jsonObj.getBoolean("success")){
-             jDialog1.setVisible(false);
-             this.hideLogin();
-            }
-            else
-            {
+            // System.out.println("{\"user\": "+new HashToString().getString(user)+"}");
+            JsonObject jsonObj = new httpConnection().doPost("/organisations/sign_in", "{\"organisation\": " + new HashToString().getString(user) + "}", "");
+            if (jsonObj.getBoolean("success")) {
+                jDialog1.setVisible(false);
+                auth_token = jsonObj.getString("token");
+                this.hideLogin();
+            } else {
                 System.err.println("Error");
             }
-
-        }catch(Exception e ){
-          
+        } catch (Exception e) {
             jLabel5.setText("Wrong Email and Password");
             jLabel5.setForeground(Color.red);
             jPasswordField1.setText("");
@@ -298,8 +283,17 @@ public class AdminDesk extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        
+        // TODO add your handling code here: for fetch data
+        System.out.println("asdasdasd");
+        try {
+            // System.out.println("{\"user\": "+new HashToString().getString(user)+"}");
+            JsonObject jsonObj = new httpConnection().doGet("/students/sync_organisation_students.json", auth_token);
+            //if(jsonObj.getBoolean("success")){
+            System.err.println(jsonObj);
+            //}
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -309,12 +303,10 @@ public class AdminDesk extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
-
     /**
      * @param args the command line arguments
      */
-    void hideLogin () {
-        
+    void hideLogin() {
         jButton1.setVisible(false);
         jLabel3.setText(jTextField1.getText());
         jPanel1.setVisible(true);
@@ -323,7 +315,7 @@ public class AdminDesk extends javax.swing.JFrame {
         jButton6.setVisible(true);
         jLabel3.setVisible(true);
     }
-    public static void main(String args[]) { 
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -346,11 +338,10 @@ public class AdminDesk extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(AdminDesk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminDesk().setVisible(true); 
+                new AdminDesk().setVisible(true);
             }
         });
     }
