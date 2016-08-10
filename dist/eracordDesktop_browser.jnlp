@@ -11,9 +11,10 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="eracordDesktop.jar" size="42159" download="eager" />
+    <jar href="eracordDesktop.jar" size="42817" download="eager" />
     <jar href="lib/beansbinding-1.2.1.jar" size="631281" download="eager" />
     <jar href="lib/javax.json-1.0.jar" size="78579" download="eager" />
+    <jar href="lib/mysql-connector.jar" size="540852" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="eracorddesktop.EracordDesktop"  name="eracordDesktop" >
   </applet-desc>
