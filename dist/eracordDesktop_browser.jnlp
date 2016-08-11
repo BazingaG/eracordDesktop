@@ -11,7 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="eracordDesktop.jar" size="44921" download="eager" />
+    <jar href="eracordDesktop.jar" size="45659" download="eager" />
     <jar href="lib/beansbinding-1.2.1.jar" size="631281" download="eager" />
     <jar href="lib/javax.json-1.0.jar" size="78579" download="eager" />
     <jar href="lib/mysql-connector.jar" size="540852" download="eager" />

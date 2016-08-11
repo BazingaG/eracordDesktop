@@ -8,41 +8,38 @@ package eracorddesktop;
 import javax.json.JsonObject;
 import javax.json.JsonArray;
 
-/**
- *
- * @author lenovo
- */
 public class FetchStudents {
 
-    void fetch(String auth_token) {
+    jdbcConnection jdbcCon = new jdbcConnection();
+
+    String fetch(String auth_token) {
+        String date = "";
         try {
-            // System.out.println("{\"user\": "+new HashToString().getString(user)+"}");
             JsonObject jsonObj = new httpConnection().doGet("/students/sync_organisation_students.json", auth_token);
             if (jsonObj.getBoolean("success")) {
                 JsonArray getArray = jsonObj.getJsonArray("students");
-
                 store_student(getArray);
+                date = jdbcCon.last_fetch_date();
+
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+        return date;
     }
 
     void store_student(JsonArray studentJson) {
         for (int i = 0; i < studentJson.size(); i++) {
-            //JSONObject objects = studentJson.getJSONArray(i);
-            //Iterate through the elements of the array i.
-            //Get thier value.
-            //Get the value for the first element and the value for the last element.
             JsonObject jsonObj = studentJson.getJsonObject(i);
             int id = jsonObj.getInt("id");
             String first_name = jsonObj.getString("first_name");
             String last_name = jsonObj.getString("last_name");
             String middle_name = jsonObj.getString("middle_name");
-            
-            new jdbcConnection().createStudents(id, first_name, last_name, middle_name);
-            
+
+            jdbcCon.createStudents(id, first_name, last_name, middle_name);
         }
+        // created new fetch record while fetching student 
+        jdbcCon.create_last_fetch(1);
     }
 
 }
