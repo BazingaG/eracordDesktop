@@ -19,11 +19,13 @@ import java.io.IOException;
 import javax.json.*;
 
 public class httpConnection {
+
     String serverURL;
-    
+
     public httpConnection() throws Exception {
         serverURL = "http://192.168.0.100:3000";
     }
+
     public JsonObject doPost(String reqUrl, String formVal, String params) throws Exception {
         HttpURLConnection connection = null;
         URL url;
@@ -72,6 +74,11 @@ public class httpConnection {
         }
         return jsonobject;
     }
+
+    public void pushAttendance() {
+        
+    }
+
     public JsonObject doGet(String reqUrl, String token) throws Exception {
         HttpURLConnection connection = null;
         URL url;
@@ -83,7 +90,7 @@ public class httpConnection {
             connection.setRequestMethod("GET");
             //connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Authorization", token);
-            
+
             //Get Response    
             InputStream is = connection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
@@ -97,10 +104,10 @@ public class httpConnection {
             //convert json string to json object
             JsonReader jsonReader = Json.createReader(new StringReader(response.toString()));
             jsonobject = jsonReader.readObject();
-            rd.close();  
+            rd.close();
         } catch (Exception e) {
-                System.out.println("Error!");
-                e.printStackTrace();
+            System.out.println("Error!");
+            e.printStackTrace();
             //return null;
         } finally {
             if (connection != null) {
@@ -109,8 +116,13 @@ public class httpConnection {
         }
         return jsonobject;
     }
+
     public static void main(String[] args) throws Exception {
 
+    }
+
+    JsonObject doPost(String studentssync_organisation_studentsjson, String auth_token) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
