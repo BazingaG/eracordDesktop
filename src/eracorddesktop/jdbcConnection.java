@@ -80,6 +80,9 @@ public class jdbcConnection {
 
         return date;
     }
+    
+    void get_atendance_records(Date date, int student_id) {
+    }
 
     public static void main(String args[]) {
     }

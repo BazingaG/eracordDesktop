@@ -14,7 +14,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-
 public class AdminDesk extends javax.swing.JFrame {
 
     /**
@@ -275,7 +274,7 @@ public class AdminDesk extends javax.swing.JFrame {
                 String date = conn.last_fetch_date();
                 jLabel6.setText(date);
                 // to call class pushAttendance.........
-                pushAttendance pa=new pushAttendance();
+                pushAttendance pa = new pushAttendance();
                 pa.start();
             } else {
                 System.err.println("Error");
@@ -300,15 +299,25 @@ public class AdminDesk extends javax.swing.JFrame {
         // TODO add your handling code here: 
         //Thread.currentThread().setName("ThreadSet");
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        for ( Thread t : threadSet){
-            if ( t.getThreadGroup() == Thread.currentThread().getThreadGroup()){
-                 System.out.println("Thread :"+t+":"+"state:"+t.getState());    
+        for (Thread t : threadSet) {
+            if (t.getThreadGroup() == Thread.currentThread().getThreadGroup()) {
+                System.out.println("Thread :" + t + ":" + "state:" + t.getState());
             }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+      try {
+            // System.out.println("{\"user\": "+new HashToString().getString(user)+"}");
+            
+            JsonObject jsonObj = new httpConnection().doGet("/organisation/get_last_attendances", auth_token);
+            if (jsonObj.getBoolean("success")) {
+                System.out.println(jsonObj);
+            }
+      } catch(Exception e) {
+          
+      } 
     }//GEN-LAST:event_jButton6ActionPerformed
     /**
      * @param args the command line arguments

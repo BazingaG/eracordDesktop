@@ -75,8 +75,30 @@ public class httpConnection {
         return jsonobject;
     }
 
-    public void pushAttendance() {
-        
+    public void pushAttendance(String reqUrl, String formVal) {
+        HttpURLConnection connection = null;
+        URL url;
+        JsonObject jsonobject = null;
+        try {
+            url = new URL(serverURL + reqUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("custom-Header", "XYZ");
+            connection.setRequestProperty("Content-Language", "en-US");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            StringBuffer requestParams = new StringBuffer();
+            requestParams.append(formVal);
+            //Send request
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.writeBytes(requestParams.toString());
+            wr.flush();
+            wr.close();
+
+        } catch (Exception e) {
+            System.err.println("pushAttendance Error... " + e);
+        }
     }
 
     public JsonObject doGet(String reqUrl, String token) throws Exception {
@@ -116,7 +138,7 @@ public class httpConnection {
         }
         return jsonobject;
     }
-
+    
     public static void main(String[] args) throws Exception {
 
     }
