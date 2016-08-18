@@ -13,9 +13,6 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Hashtable;
-import java.io.IOException;
 import javax.json.*;
 
 public class httpConnection {
@@ -75,16 +72,16 @@ public class httpConnection {
         return jsonobject;
     }
 
-    public void pushAttendance(String reqUrl, String formVal) {
+    public void pushAttendance(String token, String formVal) {
         HttpURLConnection connection = null;
         URL url;
         JsonObject jsonobject = null;
         try {
-            url = new URL(serverURL + reqUrl);
+            url = new URL(serverURL +"/organisation/add_attendances");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
+            connection.setRequestProperty("Authorization", token);
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("custom-Header", "XYZ");
             connection.setRequestProperty("Content-Language", "en-US");
             connection.setDoInput(true);
             connection.setDoOutput(true);
@@ -95,9 +92,27 @@ public class httpConnection {
             wr.writeBytes(requestParams.toString());
             wr.flush();
             wr.close();
-
+            //Get Response    
+            InputStream is = connection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while ((line = rd.readLine()) != null) {
+                response.append(line);
+                System.out.println("eracord_desktop.eraConnection.<init>()");
+                response.append('\r');
+            }
+            //convert json string to json object
+            JsonReader jsonReader = Json.createReader(new StringReader(response.toString()));
+            jsonobject = jsonReader.readObject();
+            rd.close();
+           
         } catch (Exception e) {
-            System.err.println("pushAttendance Error... " + e);
+            System.err.println("pushAttendance Error..." + e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
@@ -138,7 +153,7 @@ public class httpConnection {
         }
         return jsonobject;
     }
-    
+
     public static void main(String[] args) throws Exception {
 
     }

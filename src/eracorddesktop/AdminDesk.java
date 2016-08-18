@@ -1,18 +1,10 @@
 package eracorddesktop;
 
-import com.sun.javafx.tk.Toolkit;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Hashtable;
 import java.util.Set;
 import javax.json.*;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.json.JsonObject;
 
 public class AdminDesk extends javax.swing.JFrame {
 
@@ -308,16 +300,27 @@ public class AdminDesk extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-      try {
+        try {
             // System.out.println("{\"user\": "+new HashToString().getString(user)+"}");
-            
+
             JsonObject jsonObj = new httpConnection().doGet("/organisation/get_last_attendances", auth_token);
+
             if (jsonObj.getBoolean("success")) {
                 System.out.println(jsonObj);
+                System.out.println("asdasd");
+                System.out.println(jsonObj.getInt("student_id"));
+                JsonArrayBuilder jr = new jdbcConnection().get_atendance_records(jsonObj.getString("date"), jsonObj.getInt("student_id"));
+                httpConnection con = new httpConnection();
+
+                JsonObject jo = Json.createObjectBuilder()
+                        .add("employees", jr)
+                        .build();
+                con.pushAttendance(auth_token, jo.toString());
+
             }
-      } catch(Exception e) {
-          
-      } 
+        } catch (Exception e) {
+
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
     /**
      * @param args the command line arguments
